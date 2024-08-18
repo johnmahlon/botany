@@ -4,3 +4,7 @@ garden_file.dat
 garden_file.json
 sqlite/
 *.swp
+.DS_Store
+Sources/secrets.swift
+.build/
+xcuserdata/
