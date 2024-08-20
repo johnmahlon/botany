@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v13)
     ],
     dependencies: [
-        .package(url: "https://github.com/DiscordBM/DiscordBM", from: "1.0.0"),
+        .package(url: "https://github.com/DiscordBM/DiscordBM", revision: "52fe13121d24dc9a250fec4fc969ccec06357961"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
