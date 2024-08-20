@@ -80,7 +80,7 @@ struct EventHandler: GatewayEventHandler {
                             content: "\(interaction.member?.user?.username ?? "")'s Plant",
                             embeds: [
                                 Embed(
-                                    title: "🌱 Agave 🌱",
+                                    title: "🌱 \(name) 🌱",
                                     description: """
 ```
 \(art)
