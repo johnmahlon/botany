@@ -9,25 +9,32 @@ import Foundation
 import DiscordBM
 
 enum BotanyCommand: String, CaseIterable {
-    case helloworld
+    case water
+    case look
+    case harvest
     
     var description: String? {
         switch self {
-        case .helloworld:
-            return "Says hello, <name>"
+        case .water:
+            return "Water your plant"
+        case .look:
+            return "Look at yours and others' plants"
+        case .harvest:
+            return "Harvest your plant so you can start a new one"
         }
     }
     
     var options: [ApplicationCommand.Option]? {
         switch self {
-        case .helloworld:
-            return [
-                ApplicationCommand.Option(
-                    type: .string,
-                    name: "name",
-                    description: "name you want to say hello to"
-                )
-            ]
+        case .water: return nil
+        case .look: return [
+            ApplicationCommand.Option(
+                type: .user,
+                name: "look-user",
+                description: "Leave blank to see your plant, otherwise look at another user's plant"
+            )
+        ]
+        case .harvest: return nil
         }
     }
 }

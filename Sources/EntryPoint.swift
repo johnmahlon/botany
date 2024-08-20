@@ -14,7 +14,7 @@ struct EntryPoint {
                 status: .online,
                 afk: false
             ),
-            intents: [.guildMessages, .messageContent]
+            intents: [.guildMessages, .messageContent, .guildMembers]
         )
         
         let commands = BotanyCommand.allCases.map { command in
@@ -51,38 +51,26 @@ struct EventHandler: GatewayEventHandler {
         switch interaction.data {
         case let .applicationCommand(applicationCommand):
             switch BotanyCommand(rawValue: applicationCommand.name) {
-            case .helloWorld:
-                if let name = applicationCommand.option(named: "name")?.value?.asString {
-                    try await client.updateOriginalInteractionResponse(
-                        token: interaction.token,
-                        payload: Payloads.EditWebhookMessage(
-                            content: "A",
-                            embeds: [
-                                Embed(
-                                    title: "B",
-                                    description: "C",
-                                    timestamp: Date(),
-                                    color: .init(value: .random(in: 0 ..< (1 << 24) )),
-                                    footer: .init(text: "Footer!"),
-                                    author: .init(name: "Authored by DiscordBM!"),
-                                    fields: [
-                                        .init(name: "field name!", value: "field value!")
-                                    ]
-                                )
-                            ],
-                            components: [
-                                [
-                                    .button(
-                                        .init(
-                                            label: "Open DiscordBM!",
-                                            url: "https://github.com/DiscordBM/DiscordBM"
-                                        )
-                                    )
-                                ]
-                            ]
-                        )
-                    ).guardSuccess()
-                }
+            case .water:
+                try await client.updateOriginalInteractionResponse(
+                    token: interaction.token,
+                    payload: Payloads.EditWebhookMessage(
+                        content: "thanks, \(interaction.member?.user?.username ?? "")!",
+                        embeds: [
+                            Embed(
+                                title: "💦 Water Level 💦",
+                                description: "100%",
+                                timestamp: Date(),
+                                color: .init(value: .random(in: 0 ..< (1 << 24) )),
+                                footer: .init(text: "🌱"),
+                                author: .init(name: "authored by yannick 'happy birthday predhead' weber")
+                            )
+                        ]
+                    )
+                ).guardSuccess()
+                
+            case .look: break
+            case .harvest: break
             case .none: break
             }
             
