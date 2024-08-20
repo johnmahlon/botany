@@ -17,7 +17,7 @@ struct EntryPoint {
             intents: [.guildMessages, .messageContent]
         )
         
-        let commands = DiscordCommand.allCases.map { command in
+        let commands = BotanyCommand.allCases.map { command in
             return Payloads.ApplicationCommandCreate(
                 name: command.rawValue,
                 description: command.description,
@@ -50,8 +50,8 @@ struct EventHandler: GatewayEventHandler {
         
         switch interaction.data {
         case let .applicationCommand(applicationCommand):
-            switch DiscordCommand(rawValue: applicationCommand.name) {
-            case .helloworld:
+            switch BotanyCommand(rawValue: applicationCommand.name) {
+            case .helloWorld:
                 if let name = applicationCommand.option(named: "name")?.value?.asString {
                     try await client.updateOriginalInteractionResponse(
                         token: interaction.token,
@@ -87,31 +87,6 @@ struct EventHandler: GatewayEventHandler {
             }
             
         default: break
-        }
-    }
-}
-
-
-enum DiscordCommand: String, CaseIterable {
-    case helloworld
-    
-    var description: String? {
-        switch self {
-        case .helloworld:
-            return "Says hello, <name>"
-        }
-    }
-    
-    var options: [ApplicationCommand.Option]? {
-        switch self {
-        case .helloworld:
-            return [
-                ApplicationCommand.Option(
-                    type: .string,
-                    name: "name",
-                    description: "name you want to say hello to"
-                )
-            ]
         }
     }
 }
