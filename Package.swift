@@ -18,6 +18,9 @@ let package = Package(
             name: "botany",
             dependencies: [
                 .product(name: "DiscordBM", package: "DiscordBM"),
+            ],
+            resources: [
+                .process("Art") // Include the "art" folder as a resource
             ]
         ),
     ]

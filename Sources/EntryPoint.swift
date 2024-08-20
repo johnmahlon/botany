@@ -69,7 +69,37 @@ struct EventHandler: GatewayEventHandler {
                     )
                 ).guardSuccess()
                 
-            case .look: break
+            case .look:
+                do {
+                    let name = "Agave"
+                    let art = try readPlant(name: name.lowercased(), stage: .adult)
+                    
+                    try await client.updateOriginalInteractionResponse(
+                        token: interaction.token,
+                        payload: Payloads.EditWebhookMessage(
+                            content: "\(interaction.member?.user?.username ?? "")'s Plant",
+                            embeds: [
+                                Embed(
+                                    title: "🌱 Agave 🌱",
+                                    description: """
+```
+\(art)
+```
+""",
+                                    timestamp: Date(),
+                                    color: .init(value: .random(in: 0 ..< (1 << 24) )),
+                                    footer: .init(text: "🌱"),
+                                    author: .init(name: "authored by yannick 'happy birthday predhead' weber")
+                                )
+                            ]
+                        )
+                    ).guardSuccess()
+                    
+                    
+                } catch let err {
+                    print(err)
+                }
+                
             case .harvest: break
             case .none: break
             }
