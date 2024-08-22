@@ -26,7 +26,13 @@ enum BotanyCommand: String, CaseIterable {
     
     var options: [ApplicationCommand.Option]? {
         switch self {
-        case .water: return nil
+        case .water: return [
+            ApplicationCommand.Option(
+                type: .user,
+                name: "water-user",
+                description: "Leave blank to water your plant, otherwise water another user's plant"
+            )
+        ]
         case .look: return [
             ApplicationCommand.Option(
                 type: .user,
