@@ -13,7 +13,6 @@ import SQLite
 struct EventHandler: GatewayEventHandler {
     let event: Gateway.Event
     let client: any DiscordClient
-    let db: Connection
     
     func onInteractionCreate(_ interaction: Interaction) async throws {
         try await client.createInteractionResponse(
@@ -69,22 +68,23 @@ struct EventHandler: GatewayEventHandler {
             
             var artName: String = "template"
             var species = "No Plant :("
+            var mutation = ""
             
             // try to get plant
-            if let plant = try Plant.PlantSchema.select(db: db, owner: user.id) {
+            if let plant = try Plant.PlantSchema.select(db: Botany.db, owner: user.id) {
                 artName = plant.species.getArt(stage: plant.stage)
                 species = plant.species.rawValue
+                mutation = plant.mutation.rawValue
             }
             
-            let art = try readPlant(name: artName.lowercased(), stage: .adult)
+            let art = try readPlant(name: artName.lowercased())
             
             try await client.updateOriginalInteractionResponse(
                 token: interaction.token,
                 payload: Payloads.EditWebhookMessage(
-                    content: "\(user.username)'s Plant",
                     embeds: [
                         Embed(
-                            title: "🌱 \(species) 🌱",
+                            title: "🌱 \(mutation) \(species) 🌱",
                             description: """
 ```
 \(art)

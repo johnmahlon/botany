@@ -11,10 +11,11 @@ import SQLite
 
 class Botany {
     var bot: BotGatewayManager
-    var db: Connection
+    static let db: Connection = try! Connection("botany.sqlite3")
     
     init() async throws {
-        db = try Connection("botany.sqlite3")
+        
+        print(Botany.db.description)
         
         bot = await BotGatewayManager(
             token: Secrets.discordKey,
@@ -28,11 +29,20 @@ class Botany {
         
         setupSQLite()
         try await setupDiscord()
+        
+        
+        do {
+            try Plant.PlantSchema.insert(db: Botany.db, plant: Plant(species: .cactus, stage: .adult, owner: "568848115847790612"))
+            
+        } catch let err {
+            print(err)
+        }
+        
     }
     
     private func setupSQLite() {
         do {
-            try db.run(
+            try Botany.db.run(
                 Plant.PlantSchema.table.create(ifNotExists: true) { t in
                     t.column(Plant.PlantSchema.id, primaryKey: true)
                     t.column(Plant.PlantSchema.species)
@@ -64,7 +74,7 @@ class Botany {
             .guardSuccess()
         
         for await event in await bot.events {
-            EventHandler(event: event, client: bot.client, db: db).handle()
+            EventHandler(event: event, client: bot.client).handle()
         }
     }
 }

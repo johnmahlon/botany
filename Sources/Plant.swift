@@ -127,7 +127,12 @@ struct Plant {
                 birthday <- plant.birthday
             )
             
-            try db.run(insert)
+            do {
+                try db.run(insert)
+            } catch let err {
+                print(err)
+            }
+            
         }
         
         static func select(db: Connection, owner: UserSnowflake) throws -> Plant? {
